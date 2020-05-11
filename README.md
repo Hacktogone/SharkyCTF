@@ -101,7 +101,7 @@
 
 ## Challenges résolus
 
-A venir
+![Challenges résolus](./flagged_challenges.png)
 
 
 ![Hack'togone emblem](./hack_togone.svg)
