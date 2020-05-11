@@ -9,7 +9,7 @@
 
 ## Composition des équipes
 
-### Hack'togone
+### Hack'togone (31/828)
 
 * f0x-Tro0t
 * st3p1n 
@@ -17,7 +17,7 @@
 * Ch4llengR 
 * Kuraisis 
 
-### Hack'togone 2
+### Hack'togone 2 (57/828)
 
 * Hexomedine 
 * Protyro 
