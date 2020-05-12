@@ -28,7 +28,7 @@ Pour rappel, voici les différentes phases d'un pentest :
 ![pentest steps](./images/penteeeeest/pentest_steps.png)
 
 
-Note : Pour ce challenge n'avions pas besoin de la phase de reconnaissance.
+Note : Pour ce challenge nous n'avions pas besoin de la phase de reconnaissance.
 
 ## TL;DR
 
