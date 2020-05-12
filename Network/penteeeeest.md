@@ -14,10 +14,16 @@
 > You've found the website of a web designer, you know, the kind of guy that tells you "You can't hack me, and even if you do, what's the point?". It might be a good target to practice your pentesting skills!
 
 
+## TL;DR
+
+Pour les plus feignants, voici le cheminement pour l'épreuve ;)
+
+![cheminement](./images/cheminement.png)
+
 ## Résolution du challenge
 
 
-### Reconnaissance
+### Cartographie et énumérations
 
 Pour ce challenge, un fichier openvpn nous est fourni. 
 
@@ -241,6 +247,7 @@ Jetons un coup d'oeil au repo github :
 
 ![](./images/penteeeeest/github_project.png)
 
+### Recherche de vulnérabilités 
 
 En analysant les sources de chaque fichiers présents dans ce repository, j'ai pu relever plusieurs élèments intérréssants : 
 * admin/login.php 
@@ -569,8 +576,10 @@ connect to [172.30.0.14] from (UNKNOWN) [172.30.0.2] 60184
 id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
+
+# Élévation de privilèges (user)
  
-Nous sommes connecté avec l'utilisateur www-data et nous allons donc devoir chercher un utilisateur sur lequel pivoter :
+Nous sommes donc connectés avec l'utilisateur www-data et nous allons donc devoir chercher un utilisateur sur lequel pivoter :
  
 ```bash
 cat /etc/passwd
