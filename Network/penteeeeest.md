@@ -21,7 +21,7 @@
 
 Pour ce challenge, un fichier openvpn nous est fourni. 
 
-Une fois connecté nous arrivons sur une infrastructure pour laquelle nous n'avons pas la moindre information. 
+Une fois connecté nous arrivons sur une infrastructure inconnue. 
 
 On commence donc par vérifier les paramètres réseau obtenues lors de notre connexion au VPN : 
 
@@ -33,7 +33,7 @@ ip -4 a
        valid_lft forever preferred_lft forever
 ```
 
-Et on scanne le réseau afin de découvrir de nouvelles machines via : 
+Et on scanne le réseau afin de découvrir de nouvelles machines via nmap: 
 
 ```bash
 nmap -sn 172.30.0.0/28                                                                                                                                                                           
@@ -83,7 +83,7 @@ Nmap done: 1 IP address (1 host up) scanned in 7.15 seconds
 Le serveur web que nous cherchons est donc sur à l'adress 172.30.0.2.
 
 
-Nous lançons une reconnaissance du site web avec blackwidow : 
+Lançons une reconnaissance du site web avec [blackwidow](https://github.com/1N3/Blackwidow) 
 
 ```
 sudo ./blackwidow -u http://172.30.0.2   
@@ -221,7 +221,7 @@ ________________________________________________________________________________
 ```
 
 
-Nous pouvons voir plusieurs choses intéréssantes sur ce scan : 
+Plusieurs choses intéréssantes sur ce scan sont visibles: 
 
 * un lien externe vers un repo github : https://github.com/Michael-SharkyMaster/website
 * des urls qui comportent un paramètre GET qui pourrait peut-être servir à faire une LFI
@@ -232,10 +232,10 @@ Ouvrons le site :
 ![](./images/penteeeeest/vue_page_accueil.png)
 
 
-Nous retrouvons sur la page d'accueil notre lien github et on apprend qu'il s'agit du code source du site `"This website is also host on Github".`
+On retrouve sur la page d'accueil notre lien github et on apprend également qu'il s'agit du code source du site `"This website is also host on Github".`
 
 Nous apprenons que le blogueur s'appelle Michael. 
-Ceci pourrait être utile pour un potentiel identifiant.
+Ceci pourrait être utile pour un potentiel identifiant. De même la présence de ces goûts pourraient servir pour le mot de passe. 
 
 Jetons un coup d'oeil au repo github : 
 
@@ -283,7 +283,7 @@ Le fichier admin/login.php contenait le code suivant qui nous permettait de conf
 
 Egalement nous découvrons un fichier qui n'est pas présent dans le répositorty : creds.txt
 
-Nous allons récupérer celui-ci : 
+On récupére celui-ci : 
 
 ```bash
 curl http://172.30.0.2/admin/creds.txt
@@ -440,9 +440,9 @@ Nous allons pour cela utiliser l'extension Firefox [cookie editor](https://addon
 
 ![cookie](images/penteeeeest/cookie.png)
 
-On ajoute donc le cookie "username" avec la valeur "Michael" et le cookie "password" avec la valeur contenue dans creds.txt : "Badger1992"
+On ajoute donc le cookie "username" avec la valeur "Michael" et le cookie "password" avec la valeur: "Badger1992"
 
-Nous avons maintenant accès au formulaire d'upload : 
+On peut maintenant accéder au formulaire d'upload : 
 
 ![payload](images/penteeeeest/upload.png)
 
@@ -458,11 +458,11 @@ Nous savons grâce au code source, et au scan, que les images sont envoyés dans
 $dir = "../blog/uploads/";
 ```
 
-Nous vérifions que celui-ci est bien à l'adresse prévue : http://172.30.0.2/blog/uploads/payload.png.
+Vérifions que celui-ci est bien à l'adresse prévue : http://172.30.0.2/blog/uploads/payload.png.
 
 C'était bien le cas.
 
-Il ne nous reste donc plus qu'à effectuer notre `LFI` :  http://172.30.0.2/blog/uploads/payload.png
+Il nous reste donc plus qu'à effectuer notre `LFI` :  http://172.30.0.2/blog/uploads/payload.png
 
 Et là, c'est le drame, nous avons le message d'erreur : "Invalid Format"
 
@@ -470,13 +470,15 @@ Pourquoi ?
 
 Tout simplement qu'il y'avait un peu de `filtrage` ! 
 
-Le premier consistant à supprimer l'appel relatif : 
+Le premier consiste à supprimer l'appel relatif : 
 
 ```php
 $file = str_replace('../', '', $_GET['article']);
 ```
 
-Le second qui consistait à vérifier la présence de "_blog" dans le nom du fichier inclut et le dernier qui s'assurait de la présence de l'extension ".html" :
+Le second qui consiste quand à lui à vérifier la présence de "_blog" dans le nom du fichier inclut. 
+
+Enfin, le dernier s'assurait de la présence de l'extension ".html" :
 
 ```php
 if (strpos($file, 'blog_') !== false && strpos($file, 'html') !== false) {
@@ -484,13 +486,13 @@ if (strpos($file, 'blog_') !== false && strpos($file, 'html') !== false) {
 		}
 ```
 
-Pour le premier, nous allons modifier le début du chemin "./" par "..//" qui sera transformé par la fonction str_replace en "./" ce qui nous permettra d'effectuer l'inclusion comme voulu.
+Pour le premier, nous allons modifier le début du chemin "./" par "..//" ce qui aura pour effet d'être transformé par la fonction str_replace en "./" ce qui nous permettra d'effectuer l'inclusion comme voulu.
 
 Pour le second, et le troisième, nous allons modifier le nom de fichier comme ceci : blog_payload.html.png
 
 Notre LFI devrait donc être : `..//uploads/blog_payload.html.png`
 
-Nous transférons notre fichier et tentons l'inclusion : http://172.30.0.2/blog.php?article=..//uploads/blog_payload.html.png 
+Transférons notre fichier et tentons l'inclusion : http://172.30.0.2/blog.php?article=..//uploads/blog_payload.html.png 
 
 Ça passe ! 
 
@@ -522,9 +524,9 @@ F�(�`��Q0
     IEND�B`�<center><a href="https://github.com/Michael-SharkyMaster/website">This website is also host on Github</a></center>
 ```
 
-Notre commande passe. 
+Notre commande est exécutée avec succès. 
 
-Nous allons chercher à savoir si `[netcat](https://fr.wikipedia.org/wiki/Netcat)` est installé afin d'obtenir un reverse shell : 
+Cherchons à savoir si `[netcat](https://fr.wikipedia.org/wiki/Netcat)` est installé afin d'obtenir un reverse shell : 
 
 
 ```bash
@@ -676,7 +678,7 @@ PATH     = /var/lib/gitea/data/gitea.db
 
 On trouve un mot de passe, on espère qu'il s'agira du même pour l'utilisateur git. 
 
-On vérifie cela en se connectant via SSH : 
+Vérifions cela en nous connectant via SSH : 
 
 ```bash
 ssh git@172.30.0.2
