@@ -10,7 +10,7 @@
 
 ## Statement
 
-<img src="./files/beware_my_big_exponent.png" alt="drawing" style="width:500px;"/>
+<img src="./files/beware_my_big_exponent.png" alt="drawing" style="width:300px;"/>
 
 ## The Provided File
 
