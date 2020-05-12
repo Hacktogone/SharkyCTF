@@ -85,7 +85,7 @@
 
 ### PWN 
 
-* Give away 0
+* [Give away 0](https://github.com/Hacktogone/SharkyCTF-2020/tree/master/PWN/Give_away_0.md)
 * Give away 1
 * Give away 2
 * Captain Hook
