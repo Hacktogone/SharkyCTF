@@ -12,7 +12,7 @@
 ## Liste des challenges
 
 * Backflip in the kitchen
-* Beware my big exponent
+* [Beware my big exponent](https://github.com/Hacktogone/SharkyCTF-2020/tree/master/Crypto/Beware_my_big_exponent.md)
 * Noisy RSA
 * Heavy computation
 * Casino
@@ -20,6 +20,6 @@
 
 ## Challenges réussis 
 
-A venir
+![Solved challenges](./files/flagged_crypto_challenges.png)
 
 ![Hack'togone emblem](../hack_togone.svg)
