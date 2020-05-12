@@ -20,6 +20,6 @@
 
 ## Challenges réussis 
 
-A venir
+![Solved challenges](./files/flagged_crypto_challenges.png)
 
 ![Hack'togone emblem](../hack_togone.svg)
