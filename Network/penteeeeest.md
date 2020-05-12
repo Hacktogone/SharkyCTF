@@ -19,12 +19,6 @@
 
 ### Reconnaissance
 
-> Note : Les plus observateurs remarqueront des erreurs dans la concordance des dates scans nmap. ;) 
->
-> Quelques soucis étant apparus sur ce challenges, j'ai dû revenir dessus à plusieurs reprises et je ne pensais pas le terminer, ni faire le WU.
-> Les commandes nmap on donc été refaites après la fin du challenge ! 
-
-
 Pour ce challenge, un fichier openvpn nous est fourni. 
 
 Une fois connecté nous arrivons sur une infrastructure pour laquelle nous n'avons pas la moindre information. 
