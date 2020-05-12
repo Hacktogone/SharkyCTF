@@ -95,9 +95,9 @@ So basically,
 => to get the ciphertext : c ≡ (m<sup>e</sup>) mod n   
 => to get the plaintext : m ≡ (c<sup>d</sup>) mod n
 
-n = p*q
-λ(n) = lcm(p−1,q−1)
-d ≡ e<sup>−1</sup> (mod λ(n))
+n = p*q <br>
+λ(n) = lcm(p−1,q−1)<br>
+d ≡ e<sup>−1</sup> (mod λ(n))<br>
 
 Now, it's time for quick small maths, like [s01den](https://s01den.github.io/WriteUp_SSEcret_S01den) did.
 > Two plus two is four, minus one that's three, quick maths.
@@ -188,5 +188,6 @@ By : [st3p1n](https://www.root-me.org/st3p1n)
 * [Interisting write-up with a similar Attack](https://www.cryptologie.net/article/265/small-rsa-private-key-problem/)
 
 
-
-![Hack'togone emblem](../hack_togone.svg)
+<p align="center">
+  <img src="../hack_togone.svg" alt="Hack'togone emblem" width="700">
+</p>
