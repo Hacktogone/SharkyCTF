@@ -13,12 +13,28 @@
 
 > You've found the website of a web designer, you know, the kind of guy that tells you "You can't hack me, and even if you do, what's the point?". It might be a good target to practice your pentesting skills!
 
+## Introduction
+
+Ce challenge est le premier d'une série de trois épreuves qui consistait à réaliser un pentest : 
+
+* [Penteeeeest (1)](./penteeeeest.md)
+* Penteeeeest (2)
+* Penteeeeest (3)
+
+Dans ce writeup sera présenté les phases de la cartographie/énumération jusqu'à l'élévation de privilèges, vers un autre user, qui permet de valider le premier challenge. 
+
+Pour rappel, voici les différentes phases d'un pentest :
+
+![pentest steps](./images/penteeeeest/pentest_steps.png)
+
+
+Note : Pour ce challenge n'avions pas besoin de la phase de reconnaissance.
 
 ## TL;DR
 
 Pour les plus feignants, voici le cheminement pour l'épreuve ;)
 
-![cheminement](./images/cheminement.png)
+![cheminement](images/penteeeeest/cheminement.png)
 
 ## Résolution du challenge
 
@@ -725,7 +741,8 @@ git@e2b32e161e0c:~$ cat user.txt
 shkCTF{juSt_h4v3_t0_pr1v3sc_n0w_6bb4369a853e943339aab363e22869cd}
 ```
 
-Bingo ! 
+
+![hackerman](./images/penteeeeest/hackerman.jpg)
 
 ## Flag 
 
