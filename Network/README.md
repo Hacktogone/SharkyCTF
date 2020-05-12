@@ -12,12 +12,12 @@
 ## Liste des challenges
 
 * RattataTACACS
-* Penteeeeest (1)
+* [Penteeeeest (1)](./penteeeeest.md)
 * Penteeeeest (2)
 * Penteeeeest (3)
 
 ## Challenges réussis 
 
-A venir
+![Solved challenges](./images/flagged_network_challenges.png)
 
 ![Hack'togone emblem](../hack_togone.svg)
