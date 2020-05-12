@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center" width="500">
   <img src="../sharky_ctf_logo.png">
 </p>
 
@@ -10,7 +10,9 @@
 
 ## Statement
 
-<img src="./files/beware_my_big_exponent.png" alt="drawing" style="width:250px;"/>
+<p align="center">
+  <img src="./files/beware_my_big_exponent.png" width="500">
+</p>
 
 ## The Provided File
 
@@ -25,7 +27,9 @@ This challenge is about decrypting a network communication capture, encrypted us
 We start by opening our beloved wireshark, to check the protocols' hierarchy.
 This is a must to do when you have to handle a network packet capture, in order to have a first quick insight of what was going on that network.
 
-<img src="./files/protocol_hierarchy_ssl_enc.png" alt="drawing" style="width:600px;"/>
+<p align="center">
+  <img src="./files/protocol_hierarchy_ssl_enc.png" width="800">
+</p>
 
 
 We have mostly SSL packets.
@@ -147,7 +151,10 @@ Boom! We've obtained the precious private key as the output.  That we can happil
 
 A quick check again on the protocols' hierarchy and we can see that there is an email sent via SMTPS over that network.
 
-<img src="./files/protocol_hierarchy_ssl_dec.png" alt="drawing" style="width:600px;"/>
+
+<p align="center">
+  <img src="./files/protocol_hierarchy_ssl_dec.png" width="800">
+</p>
 
 
 Now, let's simply follow that ssl stream.
