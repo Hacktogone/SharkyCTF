@@ -11,7 +11,7 @@
 
 ## Liste des challenges
 
-* XXExternalXX
+* [XXExternalXX](./XXExternal.md)
 * Logs In ! Part 1
 * Containment Forever
 * WebFugu
