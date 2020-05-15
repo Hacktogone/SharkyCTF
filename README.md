@@ -57,7 +57,7 @@
 
 ### Steganography
 
-* Basic LSB
+* [Basic LSB](https://github.com/Hacktogone/SharkyCTF-2020/tree/master/Steganography/BasicLSB.md)
 
 ### Web
 
