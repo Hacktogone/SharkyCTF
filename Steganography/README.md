@@ -13,9 +13,8 @@
 
 * Basic LSB
 
-
 ## Challenges réussis 
 
-A venir
+![Solved challenges](./files/flagged_steg_challenges.png)
 
 ![Hack'togone emblem](../hack_togone.svg)
